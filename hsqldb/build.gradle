@@ -11,6 +11,7 @@ ext {
     hsqldbVersion = "2.3.4"
 	log4jVersion = '2.5'
     junitVersion = '4.12'
+    springVersion = '4.3.8.RELEASE'
 	
 	libraries = [       
         hsqldb: [
@@ -21,6 +22,12 @@ ext {
                 "org.apache.logging.log4j:log4j-api:${log4jVersion}",
                 "org.apache.logging.log4j:log4j-core:${log4jVersion}",
                 "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+        ],
+        spring: [
+                "org.springframework:spring-jdbc:${springVersion}",
+                "org.springframework:spring-test:${springVersion}",
+                "org.springframework:spring-core:${springVersion}",
+                "org.springframework:spring-context:${springVersion}"
         ]
 	]
 }
@@ -28,7 +35,10 @@ ext {
 dependencies {
     compile libraries.log4j
     compile libraries.hsqldb
+    compile libraries.spring
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+
+
 }
 
-apply plugin: 'application'
-mainClassName = "wdsr.exercise5.Main"
