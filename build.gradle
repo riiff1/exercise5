@@ -37,8 +37,5 @@ dependencies {
     compile libraries.hsqldb
     compile libraries.spring
     testCompile group: 'junit', name: 'junit', version: '4.12'
-
-
-
 }
 

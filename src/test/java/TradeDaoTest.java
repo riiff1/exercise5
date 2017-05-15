@@ -3,6 +3,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
@@ -36,7 +37,7 @@ public class TradeDaoTest {
         int i = tradeDao.insertTrade(trade);
 
         // then
-        Assert.assertEquals(1, i);
+        Assert.assertEquals(2, i);
     }
 
     @Test
@@ -49,7 +50,7 @@ public class TradeDaoTest {
         tradeDao.updateTrade(1, trade);
 
         // then
-        Assert.assertEquals(JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trade", "id=2 and asset='PKP INTERCITY' and amount=70.0 and date='2017-05-01'"), 1);
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trade", "id=1 and asset='PKP INTERCITY' and amount=70.0 and date='2017-05-01'"));
     }
 
     @Test
@@ -64,6 +65,25 @@ public class TradeDaoTest {
         // then
         Assert.assertTrue(trade.isPresent());
         Assert.assertEquals(expectedTrade, trade.get());
+    }
+
+    @Test
+    public void extractTradeWithCallbackTest() {
+        // given
+        Date date = java.sql.Date.valueOf(LocalDate.of(2017, 1, 1));
+        Trade expectedTrade = new Trade(0, "GFT", 90.0, date);
+
+        final Trade[] actualTrade = new Trade[1];
+        RowCallbackHandler rch = rs -> {
+            actualTrade[0] = new Trade(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getDate(4));
+            Assert.assertEquals(expectedTrade, actualTrade[0]);
+        };
+
+        // when
+        tradeDao.extractTrade(0, rch);
+
+        // then
+        Assert.assertNotNull(actualTrade[0]);
     }
 
     @Test
