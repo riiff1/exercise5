@@ -19,6 +19,12 @@ public class Mainek {
         makeTables.createAllTablesFromEStringSqlTables();
         InsertToTables insertToTables = new InsertToTables(connection);
         insertToTables.insertAllDataFromEStringSqlInserts();
+        //Ponizsze zakomentowane linijki sluza do wpisywania do tabel poprzez prepareStatment. Zostaly one zakomentowane,
+        //aby nie zaburzyc wynikow dla konkretnych danych z prezentacji.
+        //One dzialaja. W celu srpawdzenia zaleca sie odpalic jeszcze raz Pana baze i oczywiscie odkomentowac te linijki.
+/*        insertToTables.insertToDatabase(ETableName.STUDENT,"5","Rafal testt","male","99","4");
+        insertToTables.insertToDatabase(ETableName.STUDENT,"6","testt testt","male","test","4");
+        insertToTables.insertToDatabase(ETableName.STUDENT,"7","testt");*/
         SelectFromDatabase selectFromDatabase = new SelectFromDatabase(connection);
         selectFromDatabase.takeTasksFrom1To3();
         selectFromDatabase.takeTasksFrom1To4();
